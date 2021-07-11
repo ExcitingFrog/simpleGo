@@ -35,6 +35,12 @@ func ConvertInterfaceArrayToFloat64Array(array []interface{}) ([]float64, error)
 			res = append(res, value.(float64))
 		case reflect.Int:
 			res = append(res, float64(value.(int)))
+		case reflect.String:
+			num, err := strconv.ParseFloat(value.(string), 64)
+			if err != nil {
+				return nil, err
+			}
+			res = append(res, num)
 		default:
 			return nil, fmt.Errorf("type error")
 		}
@@ -68,6 +74,12 @@ func ConvertInterfaceArrayToInt64Array(array []interface{}) ([]int64, error) {
 			res = append(res, int64(value.(float64)))
 		case reflect.Int:
 			res = append(res, int64(value.(int)))
+		case reflect.String:
+			num, err := strconv.ParseFloat(value.(string), 64)
+			if err != nil {
+				return nil, err
+			}
+			res = append(res, int64(num))
 		default:
 			return nil, fmt.Errorf("type error")
 		}
@@ -85,9 +97,27 @@ func ConvertInterfaceArrayToStringArray(array []interface{}) ([]string, error) {
 		switch reflect.TypeOf(value).Kind() {
 		case reflect.String:
 			res = append(res, value.(string))
+		case reflect.Float64:
+			res = append(res, fmt.Sprintf("%g", value.(float64)))
+		case reflect.Int:
+			res = append(res, strconv.Itoa(value.(int)))
+		case reflect.Int64:
+			res = append(res, strconv.FormatInt(value.(int64), 64))
 		default:
 			return nil, fmt.Errorf("type error")
 		}
 	}
 	return res, nil
+}
+
+// Decimal ...
+func Decimal(value float64) float64 {
+	value, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", value), 64)
+	return value
+}
+
+// DecimalToZero ...
+func DecimalToZero(value float64) float64 {
+	value, _ = strconv.ParseFloat(fmt.Sprintf("%.0f", value), 64)
+	return value
 }
