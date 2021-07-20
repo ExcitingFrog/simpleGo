@@ -131,7 +131,16 @@ fmt.Println(array.DeleteDuplicate([]string{"1", "2", "3", "3"}))
 // [1 2 3] <nil>
 ```
 
+### simple
 
+#### If
+
+Ternary operator
+
+```go
+fmt.Println(simple.If(2 > 3, 2, 3)
+// 3
+```
 
 ### stime
 
